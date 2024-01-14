@@ -7,101 +7,28 @@
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NAVs Price</title>
-   <script src="data.js"></script>
+    <script src="data.js"></script>
+    <script defer src="root/header.js"></script>
+    <link rel="stylesheet" href="root/table.css">
+    <link rel="stylesheet" href="root/header.css">
+
 
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
         html {
             height: 100%;
         }
 
-
         body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 1em;
             height: 100%;
-        }
-
-        header {
-            padding: 1em;
-            text-align: center;
-        }
-
-        h1,
-        h2,
-        h3 {
-            text-decoration: underline;
         }
 
         main {
-            padding: 1em;
+            padding: 0 1em;
             overflow: scroll;
             height: 100%;
-            width: fit-content;
+            justify-content: unset;
         }
 
-        table {
-            border-collapse: collapse;
-            font-size: 0.9em;
-            font-family: sans-serif;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15),
-                -1px 8px 20px 1px rgb(0 0 0 / 15%);
-            border-radius: 1em;
-            width: fit-content;
-            height: fit-content;
-
-        }
-
-        table thead tr {
-            background-color: #009879;
-            color: #ffffff;
-            text-align: left;
-        }
-
-        table th {
-            padding: 15px;
-        }
-
-        table td {
-            padding: 12px 15px;
-        }
-
-        table tbody tr {
-            border-bottom: 1px solid #dddddd;
-        }
-
-        table tbody tr:nth-of-type(even) {
-            background-color: #f3f3f3;
-        }
-
-        table tbody tr:last-of-type {
-            border-bottom: 2px solid #009879;
-        }
-
-        table tbody tr.active-row {
-            font-weight: bold;
-            color: #009879;
-        }
-
-        th:nth-child(1) {
-            border-radius: .5em 0px 0px 0px;
-        }
-
-        th:nth-last-child(1) {
-            border-radius: 0px .5em 0px 0px;
-        }
-
-        td {
-            border-right: 1px solid rgba(0, 0, 0, 0.155);
-        }
 
         #duration {
             border: 2px solid white;
@@ -127,45 +54,41 @@
             background: hsla(78, 78%, 39%, 0.549);
             z-index: -4;
         }
-
-        @media (max-width: 770px) {
-            main {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 
 <body>
-    <header>
-        <nav>
-            <a href="index.html">Future Market</a> | <a href="nav-price.html">NAV Price</a>
-        </nav>
-    </header>
+    <header></header>
 
-    <h2>NAV Price Records</h2>
+    <section class="header-info">
+        <h2 class="heading">NAV Price Records</h2>
+        <select name="duration" id="duration">
+            <option value="1M">1 month</option>
+            <option value="3M">3 Months</option>
+            <option value="6M">6 Months</option>
+            <option value="1Y">1 Year</option>
+            <option value="2Y">2 Years</option>
+            <option value="5Y">5 Years</option>
+            <option value="ALL">All</option>
+        </select>
+    </section>
+
+
+
     <main>
         <table>
             <thead>
                 <tr>
-                    <th>Company Name &nbsp;
-                        <select name="duration" id="duration">
-                            <option value="1M">1 month</option>
-                            <option value="3M">3 Months</option>
-                            <option value="6M">6 Months</option>
-                            <option value="1Y">1 Year</option>
-                            <option value="2Y">2 Years</option>
-                            <option value="5Y">5 Years</option>
-                            <option value="ALL">All</option>
-                        </select>
-                    </th>
+                    <th>Company Name</th>
                     <th>Min</th>
                     <th>Average</th>
                     <th>Max</th>
                     <th>Current</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+
+            </tbody>
 
         </table>
     </main>
@@ -174,6 +97,41 @@
 
 <script>
     tbody = document.querySelector('tbody');
+
+
+
+    var alertstate = false
+    function showalert(msg, color) {
+        ldiv = document.createElement('div')
+        ldiv.classList.add('alertcontainer')
+        ldiv.style = ` position: absolute;
+    top: 2em;
+    left: 50%;
+    translate: -50%;
+    z-index: 30;
+    text-align: center;
+
+    width: 350px;`
+
+        document.body.append(ldiv)
+
+
+        if (alertstate) {
+            alert.innerHTML = `<span class="closebtn" style="margin-left: 15px;color: white;font-weight: bold;float: right;font-size: 22px;line-height: 20px;cursor: pointer;transition: 0.3s;" onclick="this.parentElement.remove();alertstate = false">&times;</span>${msg}`
+        } else {
+            alert = document.createElement('div')
+            color = color || 'red'
+            alert.classList.add('alert')
+            alert.style = ` margin: .2em;padding: 15px;border-radius: 10px;color: white;z-index: 20;background-color: ${color}`
+            alert.innerHTML = `<span class="closebtn" style="margin-left: 15px;color: white;font-weight: bold;float: right;font-size: 22px;line-height: 20px;cursor: pointer;transition: 0.3s;" onclick="this.parentElement.remove();alertstate = false">&times;</span>${msg}`
+            alertstate = true
+            setTimeout(() => {
+                alert.remove()
+                alertstate = false
+            }, (2000));
+            document.querySelector('.alertcontainer').append(alert)
+        }
+    }
 
     function getMax(arry) {
         return arry.length ? Math.max(...arry) : 0;
@@ -195,12 +153,6 @@
         return ((value - min) / (max - min)) * 100;
     }
 
-    // function getColorBasedOnValue(value) {
-    //     const normalizedValue = Math.min(Math.max(value, 0), 100);
-    //     const red = 255 - (normalizedValue * 2.55);
-    //     const green = normalizedValue * 2.55;
-    //     return `rgb(${red}, ${green}, 0, 0.549)`;
-    // }
     function getColorBasedOnValue(value) {
         const normalizedValue = Math.min(Math.max(value, 0), 100);
         const red = normalizedValue < 100 ? 255 : 0;
@@ -228,9 +180,9 @@
 
     async function updateTable() {
         for (const e of DATA) {
-            const url = `https://www.moneycontrol.com/mc/widget/mfnavonetimeinvestment/get_chart_value?isin=${e.isin}&dur=${duration.value}`;
-            // const url = `https://script.google.com/macros/s/AKfycbzEIUrVIoL_ibMzkFbOoiyGZ1gpPHkEhLqZDCQSmqQS-5dHW8rP7euLO6kLk-uGFisi8g/exec?url=https://www.moneycontrol.com/mc/widget/mfnavonetimeinvestment/get_chart_value?isin=${e.isin}&dur=${duration.value}`;
-
+            url = `https://www.moneycontrol.com/mc/widget/mfnavonetimeinvestment/get_chart_value?isin=${e.isin}&dur=${duration.value}`;
+            // url = 'https://cors-anywhere.herokuapp.com/' + url
+            // url = `https://script.google.com/macros/s/AKfycbzBfsOVbZlRg0frjwIF6ZJB5wkH7260Z379gmXi8HP9EjuJ-q76iHKoyw_FEEfEJT9EgQ/exec?url=${url}`;
 
             try {
                 const data = await fetchurl(url);
@@ -246,22 +198,32 @@
                 <td>${result.min}</td>
                 <td>${result.avg}</td>
                 <td>${result.max}</td>
-                <td title="-${(100-graph_value).toFixed(2)}%" class="graph"><span  style="right: calc(100% - ${graph_value}%);background-color:${bg_color};"></span>${result.current}</td>`;
+                <td title="-${(100 - graph_value).toFixed(2)}%" class="graph"><span  style="right: calc(100% - ${graph_value}%);background-color:${bg_color};"></span>${result.current}</td>`;
                 tbody.appendChild(row);
             } catch (error) {
                 console.log(error);
+                showalert('Please Enable Desktop mode.');
             }
         }
     }
 
-
-
     updateTable();
+
+
+
+
+
+
+
+
+
+
 
     duration.onchange = () => {
         tbody.innerHTML = '';
         updateTable();
     };
+
 
 
 </script>

@@ -5,67 +5,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Price</title>
+    <link rel="stylesheet" href="root/table.css">
+    <link rel="stylesheet" href="root/header.css">
+    <script defer src="root/header.js"></script>
 </head>
 <style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    header {
-        padding: 1em;
-        text-align: center;
-    }
-
-    h1 {
-        text-decoration: underline;
-    }
-
     table {
-        border-collapse: collapse;
-        margin: 25px 0;
-        font-size: 0.9em;
-        font-family: sans-serif;
-        min-width: 400px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        min-width: 50%;
     }
 
-    a {
-        color: unset;
+    @media (max-width: 770px) {
+        table {
+            min-width: 90%;
+        }
+
     }
 
-    tr {
-        background-color: #009879;
-        color: #ffffff;
-        text-align: left;
+
+    .positive {
+        background: rgba(42, 239, 42, 0.7);
+
     }
 
-    td {
-        padding: 12px 15px;
-        text-align: center;
-    }
+    .negative {
+        background: rgba(252, 42, 42, 0.7);
 
-    tr {
-        border-bottom: 1px solid #dddddd;
     }
 </style>
 
 <body>
     <header>
-        <nav>
-            <a href="index.html">Future Market</a> | <a href="nav-price.html">NAV Price</a>
-        </nav>
+
     </header>
-    <h1>Tomorrow Market</h1>
-    <div id="date"></div>
-    <div id="output"></div>
+    <section class="header-info">
+        <h2 class="heading">Tomorrow's Market</h2>
+        <div id="date"></div>
+
+    </section>
+    <main>
 
 
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>₹</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody> </tbody>
+        </table>
+
+
+
+
+    </main>
 </body>
+
+
+
 <script>
     const url = 'https://www.moneycontrol.com/stocksmarketsindia/';
+    const outputElement = document.querySelector('tbody');
 
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -82,7 +83,6 @@
     fetch(url)
         .then(response => response.text())
         .then(html => {
-            // Create a temporary DOM element to parse the HTML
             const tempElement = document.createElement('div');
             tempElement.innerHTML = html;
             table = tempElement.querySelector('#maindindi .marketatc_actcont .mctable1');
@@ -94,11 +94,39 @@
                 }
             });
 
-            table = "<table> <tr><td>Company</td><td>₹</td><td>%</td></tr>" + table.querySelectorAll("tbody tr")[4].outerHTML + "</table>"
+            tbody = `<tr>
+                    ${colorizeCell(table.querySelectorAll("tbody tr")[1])}
+                    ${colorizeCell(table.querySelectorAll("tbody tr")[2])}
+                    ${colorizeCell(table.querySelectorAll("tbody tr")[3])}     
+                    ${colorizeCell(table.querySelectorAll("tbody tr")[4])}
+                </tr>`
 
 
-            const outputElement = document.getElementById('output');
-            outputElement.outerHTML = table
+            outputElement.innerHTML = tbody;
+
+
+            function colorizeCell(row) {
+                const cells = row.querySelectorAll('td');
+                const companyCell = cells[0];
+
+                companyCell.innerHTML = companyCell.textContent;
+
+                const valueCell = cells[2];
+                const value = parseFloat(valueCell.innerText.replace(/[₹%]/g, ''));
+
+                if (value < 0) {
+                    valueCell.classList.add('negative');
+                } else if (value > 0) {
+                    valueCell.classList.add('positive');
+                }
+
+                if (value > 0) {
+                    valueCell.innerHTML = `+${valueCell.innerHTML}`;
+                }
+
+                return row.outerHTML;
+            }
+
 
         })
         .catch(error => {
