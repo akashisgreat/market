@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Area Calculator</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗺</text></svg>">
+</head>
+<style>
+    body {
+        font-size: 20px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    main {
+        width: 80%;
+        background: #bacdd0ac;
+        margin: auto;
+        border-radius: .2em;
+    }
+
+    [logo_name] {
+        text-align: center;
+        margin: .3em;
+        padding: .2em;
+    }
+
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 1em;
+        padding: 1em;
+    }
+
+
+
+    main>div {
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        gap: .5em;
+    }
+
+    main section {
+        border: 2px solid #ccc;
+        padding: .5em;
+        border-radius: .5em;
+
+    }
+
+    .input_dims {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: .3em;
+    }
+
+    .input-container {
+        margin: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: .25em;
+
+
+    }
+
+    .input-container input {
+        width: 160px;
+
+    }
+
+</style>
+
+<style>
+    /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+}
+
+body {
+    font-size: 18px;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    flex-direction: column;
+}
+
+[logo_name] {
+    text-align: center;
+    margin: 20px auto;
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+main {
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+main:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.input-section label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ecf0f1;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+button {
+    padding: 10px 14px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-btn {
+    background: #27ae60;
+    color: white;
+    font-weight: bold;
+}
+
+.add-btn:hover {
+    background: #219653;
+}
+
+.remove-btn {
+    background: #e74c3c;
+    color: white;
+    font-weight: bold;
+}
+
+.remove-btn:hover {
+    background: #c0392b;
+}
+
+#result {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.calculate-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    background: #2980b9;
+    color: white;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.calculate-btn:hover {
+    background: #1c6ea4;
+}
+
+select {
+    width: 150px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #3498db;
+    border-radius: 6px;
+    background: white;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: 0.3s;
+    outline: none;
+}
+
+/* On focus (when user clicks) */
+select:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+}
+
+/* Dropdown Arrow */
+select::-ms-expand {
+    display: none; /* Hide default arrow in IE */
+}
+
+select:hover {
+    border-color: #1c6ea4;
+}
+
+/* Option Styling */
+option {
+    font-size: 16px;
+    padding: 10px;
+    background: white;
+}
+
+
+</style>
+
+<body>
+    <header>
+        <h2 logo_name>
+            Land Area Calculator 🗺
+        </h2>
+    </header>
+    <main>
+        <select name="unit" id="unit">
+            <option value="ft">Feet</option>
+            <option value="कड़ी">link (कड़ी)</option>
+        </select>
+        <div>
+            <section>
+                <div class="lengths_div input_dims">
+                    <label for="length">Length: </label>
+                    <div class="input-container">
+                        <input type="number">
+                        <button type="button" onclick="addNewDiv(this)">+ Add</button>
+                        <button type="button" onclick="removeDiv(this)">Remove</button>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="widths_div input_dims">
+                    <label for="width">Width: </label>
+                    <div class="input-container">
+                        <input type="number">
+                        <button type="button" onclick="addNewDiv(this)">+ Add</button>
+                        <button type="button" onclick="removeDiv(this)">Remove</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div id="result"></div>
+        <button class="calculate-btn" onclick="calculate()">Calculate</button>
+
+
+    </main>
+
+
+
+    <script>
+        function addNewDiv(button) {
+            let parentDiv = button.parentElement; // Get the parent div
+            let inputElement = parentDiv.querySelector("input[type='number']"); // Get input field
+            let number = parseFloat(inputElement.value); // Convert to number
+
+            if (!isNaN(number) || inputElement.value === "") {
+                // Remove the "+ Add" button from the current div
+                button.style.display = "none";
+
+                // Create a new div similar to the parent
+                let newDiv = document.createElement("div");
+                newDiv.className = "input-container";
+
+                // Create new input field
+                let newInput = document.createElement("input");
+                newInput.type = "number";
+
+                // Create "+ Add" button
+                let addButton = document.createElement("button");
+                addButton.textContent = "+ Add";
+                addButton.onclick = function () { addNewDiv(addButton); };
+
+                // Create "Remove" button (always visible)
+                let removeButton = document.createElement("button");
+                removeButton.textContent = "Remove";
+                removeButton.onclick = function () { removeDiv(removeButton); };
+
+                // Append elements to new div
+                newDiv.appendChild(newInput);
+                newDiv.appendChild(addButton);
+                newDiv.appendChild(removeButton);
+
+                // Insert new div after the current one
+                parentDiv.after(newDiv);
+            } else {
+                console.log("Please enter a valid number.");
+            }
+        }
+
+        function removeDiv(button) {
+            let divToRemove = button.parentElement; // Get parent div of the button
+            divToRemove.remove(); // Remove the entire div
+        }
+    </script>
+
+
+
+    <script>
+        function average(arr) {
+            if (arr.length === 0) return 0; // Handle empty array case
+            let sum = arr.reduce((acc, num) => acc + num, 0);
+            return sum / arr.length;
+        }
+
+        console.log("=========")
+        function calculate() {
+            land_lengths = []
+            land_widths = []
+            lengths = document.querySelectorAll('.lengths_div input')
+            widths = document.querySelectorAll('.widths_div input')
+
+            lengths.forEach(e => {
+                if (isNaN(e) || e.value == "") {
+                    console.log("plese enter a number")
+                    e.focus()
+                }
+                console.log("L: ", e.value)
+                land_lengths.push(parseFloat(e.value))
+
+            });
+
+            widths.forEach(e => {
+                if (isNaN(e) || e.value == "") {
+                    console.log("plese enter a number")
+                    e.focus()
+                }
+                console.log("W: ", e.value)
+                land_widths.push(parseFloat(e.value))
+            });
+
+            avg_length = average(land_lengths)
+            avg_width = average(land_widths)
+            land_area = (avg_length * avg_width)
+
+            console.log("----------")
+            console.log(land_lengths, avg_length)
+            console.log(land_widths, avg_width)
+            console.log("Answer: ", land_area)
+
+
+            if (unit.value == "ft") {
+                factor=1/435.6
+            }else{
+                factor=1/1000
+            }
+            result_html_text = `${land_area} ${unit.value}² <br> या <br> ${(land_area*factor).toFixed(3)} Dismil` 
+            result.innerHTML = result_html_text 
+
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>

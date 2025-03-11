@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Calculator</title>
+</head>
+
+<body>
+    <script>
+        function triangle_area_calc(sides) {
+
+            s = (sides[0] + sides[1] + sides[2]) / 2
+
+            root_under_value = s * (s - sides[0]) * (s - sides[1]) * (s - sides[2])
+
+            triangle_area = Math.sqrt(root_under_value);
+
+            return triangle_area
+        }
+
+        function quad_area(sides) {
+            const s = (sides[0] + sides[1] + sides[2] + sides[3]) / 2;
+            const area = Math.sqrt((s - sides[0]) * (s - sides[1]) * (s - sides[2]) * (s - sides[3]));
+            return area;
+        }
+
+
+
+        original_area = triangle_area_calc([5, 6, 8]) + triangle_area_calc([8, 7.3, 4])
+
+
+
+        console.log(original_area,quad_area([5,6,7.3,4]))
+
+
+    </script>
+</body>
+
+</html>
